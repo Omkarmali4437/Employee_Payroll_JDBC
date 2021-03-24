@@ -16,4 +16,11 @@ public class EmployeePayrollTest {
         Assert.assertEquals(3,employeePayrollDataList.size());
     }
 
+    @Test
+    public void update_table_should_return_true(){
+        EmployeePayroll employeePayroll=new EmployeePayroll();
+        employeePayroll.updateData();
+        List<EmployeePayrollData> employeePayrollDataList=employeePayroll.readData();
+        Assert.assertEquals(3,employeePayrollDataList.size());
+    }
 }

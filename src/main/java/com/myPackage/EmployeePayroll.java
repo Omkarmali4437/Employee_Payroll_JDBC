@@ -43,17 +43,22 @@ public class EmployeePayroll {
                         resultSet.getDate(3),resultSet.getDouble(4),resultSet.getString(5));
                 employeePayrollDataArrayList.add(employeePayrollData);
             }
+            statement.close();
+            connection.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return employeePayrollDataArrayList;
     }
 
-    public static void listdrivers(){
-        Enumeration<Driver> driverlist=DriverManager.getDrivers();
-        while(driverlist.hasMoreElements()){
-            Driver driverClass=(Driver) driverlist.nextElement();
-            System.out.println(" "+driverClass.getClass().getName());
+    public void updateData(){
+        String sql_query="Update employee_payroll set salary='300000' where id='3'; ";
+        try {
+            Connection connection=this.getConnection();
+            Statement statement=connection.createStatement();
+            long resultSet=statement.executeLargeUpdate(sql_query);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 }
