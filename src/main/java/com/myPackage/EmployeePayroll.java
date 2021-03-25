@@ -1,6 +1,7 @@
 package com.myPackage;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,17 +31,11 @@ public class EmployeePayroll {
                 Date date=resultSet.getDate(3);
                 double salary=resultSet.getDouble(4);
                 String gender=resultSet.getString(5);
-                System.out.println("+++++++++++++++++++++++++++");
-                System.out.println("Id: "+id);
-                System.out.println("Name: "+name);
-                System.out.println("Start date: "+date);
-                System.out.println("Salary: "+salary);
-                System.out.println("Gender: "+gender);
-
                 EmployeePayrollData employeePayrollData=new EmployeePayrollData(resultSet.getInt(1),resultSet.getString(2),
                         resultSet.getDate(3),resultSet.getDouble(4),resultSet.getString(5));
                 employeePayrollDataArrayList.add(employeePayrollData);
             }
+            System.out.println(employeePayrollDataArrayList.toString());
             connection.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -48,12 +43,12 @@ public class EmployeePayroll {
         return employeePayrollDataArrayList;
     }
 
-    public long updateData(){
+    public long updateData(double salary,int id){
         try {
             Connection connection=this.getConnection();
             PreparedStatement preparedStatement=connection.prepareStatement("Update employee_payroll set salary=? where id=? ; ");
-            preparedStatement.setDouble(1,300000);
-            preparedStatement.setInt(2,3);
+            preparedStatement.setDouble(1,salary);
+            preparedStatement.setInt(2,id);
             long resultSet=preparedStatement.executeUpdate();
             System.out.println(resultSet);
             return resultSet;
@@ -63,32 +58,25 @@ public class EmployeePayroll {
         return 0;
     }
 
-    public List<EmployeePayrollData> employeeDetailsfromDate(){
+    public List<EmployeePayrollData> employeeDetailsfromDate(String date){
         List<EmployeePayrollData> employeePayrollDataArrayList=new ArrayList<>();
         try {
             Connection connection=this.getConnection();
             PreparedStatement preparedStatement=connection.prepareStatement("Select * from employee_payroll where start>=? ");
-            preparedStatement.setDate(1, Date.valueOf("2019-01-01"));
+            preparedStatement.setDate(1, Date.valueOf(date));
             ResultSet resultSet=preparedStatement.executeQuery();
 
             while (resultSet.next()){
                 int id=resultSet.getInt(1);
                 String name=resultSet.getString(2);
-                Date date=resultSet.getDate(3);
+                Date date1=resultSet.getDate(3);
                 double salary=resultSet.getDouble(4);
                 String gender=resultSet.getString(5);
-                System.out.println("+++++++++++++++++++++++++++");
-                System.out.println("Id: "+id);
-                System.out.println("Name: "+name);
-                System.out.println("Start Date: "+date);
-                System.out.println("Salary: "+salary);
-                System.out.println("Gender: "+gender);
-
                 EmployeePayrollData employeePayrollData=new EmployeePayrollData(resultSet.getInt(1),resultSet.getString(2),
                         resultSet.getDate(3),resultSet.getDouble(4),resultSet.getString(5));
                 employeePayrollDataArrayList.add(employeePayrollData);
-
             }
+            System.out.println(employeePayrollDataArrayList.toString());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

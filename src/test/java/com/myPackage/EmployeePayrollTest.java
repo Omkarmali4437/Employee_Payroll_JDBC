@@ -3,6 +3,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 
@@ -21,13 +23,16 @@ public class EmployeePayrollTest {
 
     @Test
     public void update_table_should_return_true(){
-        long result=employeePayroll.updateData();
+        double salary=600000;
+        int id=3;
+        long result=employeePayroll.updateData(salary,id);
         Assert.assertEquals(1,result);
     }
 
     @Test
     public void should_reurn_employee_datails_for_a_given_date_range(){
-        List<EmployeePayrollData>employeePayrollDataList=employeePayroll.employeeDetailsfromDate();
+        String date = "2019-01-01";
+        List<EmployeePayrollData>employeePayrollDataList=employeePayroll.employeeDetailsfromDate(date);
         Assert.assertEquals(3,employeePayrollDataList.size());
     }
 
