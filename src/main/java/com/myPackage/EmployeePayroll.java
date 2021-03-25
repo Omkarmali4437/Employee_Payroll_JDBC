@@ -19,11 +19,9 @@ public class EmployeePayroll {
     }
 
     public List<EmployeePayrollData> readData() {
-        String sql_query="Select * from employee_payroll; ";
         List<EmployeePayrollData> employeePayrollDataArrayList=new ArrayList<>();
         try {
             Connection connection=this.getConnection();
-            //Statement statement=connection.createStatement();
             PreparedStatement preparedStatement=connection.prepareStatement("Select * from employee_payroll; ");
             ResultSet resultSet=preparedStatement.executeQuery();
 
@@ -64,5 +62,37 @@ public class EmployeePayroll {
             throwables.printStackTrace();
         }
         return 0;
+    }
+
+    public List<EmployeePayrollData> employeeDetailsfromDate(){
+        List<EmployeePayrollData> employeePayrollDataArrayList=new ArrayList<>();
+        try {
+            Connection connection=this.getConnection();
+            PreparedStatement preparedStatement=connection.prepareStatement("Select * from employee_payroll where start>=? ");
+            preparedStatement.setDate(1, Date.valueOf("2019-01-01"));
+            ResultSet resultSet=preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                int id=resultSet.getInt(1);
+                String name=resultSet.getString(2);
+                Date date=resultSet.getDate(3);
+                double salary=resultSet.getDouble(4);
+                String gender=resultSet.getString(5);
+                System.out.println("+++++++++++++++++++++++++++");
+                System.out.println("Id: "+id);
+                System.out.println("FirstName: "+name);
+                System.out.println("LastName: "+date);
+                System.out.println("Adress: "+salary);
+                System.out.println("City: "+gender);
+
+                EmployeePayrollData employeePayrollData=new EmployeePayrollData(resultSet.getInt(1),resultSet.getString(2),
+                        resultSet.getDate(3),resultSet.getDouble(4),resultSet.getString(5));
+                employeePayrollDataArrayList.add(employeePayrollData);
+
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return employeePayrollDataArrayList;
     }
 }

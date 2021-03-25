@@ -22,4 +22,11 @@ public class EmployeePayrollTest {
         long result=employeePayroll.updateData();
         Assert.assertEquals(1,result);
     }
+
+    @Test
+    public void should_reurn_employee_datails_for_a_given_date_range(){
+        EmployeePayroll employeePayroll=new EmployeePayroll();
+        List<EmployeePayrollData>employeePayrollDataList=employeePayroll.employeeDetailsfromDate();
+        Assert.assertEquals(2,employeePayrollDataList.size());
+    }
 }
