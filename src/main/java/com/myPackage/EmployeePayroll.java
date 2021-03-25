@@ -51,14 +51,18 @@ public class EmployeePayroll {
         return employeePayrollDataArrayList;
     }
 
-    public void updateData(){
-        String sql_query="Update employee_payroll set salary='300000' where id='3'; ";
+    public long updateData(){
         try {
             Connection connection=this.getConnection();
-            Statement statement=connection.createStatement();
-            long resultSet=statement.executeLargeUpdate(sql_query);
+            PreparedStatement preparedStatement=connection.prepareStatement("Update employee_payroll set salary=? where id=? ; ");
+            preparedStatement.setDouble(1,300000);
+            preparedStatement.setInt(2,3);
+            long resultSet=preparedStatement.executeUpdate();
+            System.out.println(resultSet);
+            return resultSet;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        return 0;
     }
 }
