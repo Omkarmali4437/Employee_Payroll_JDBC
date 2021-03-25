@@ -23,8 +23,9 @@ public class EmployeePayroll {
         List<EmployeePayrollData> employeePayrollDataArrayList=new ArrayList<>();
         try {
             Connection connection=this.getConnection();
-            Statement statement=connection.createStatement();
-            ResultSet resultSet=statement.executeQuery(sql_query);
+            //Statement statement=connection.createStatement();
+            PreparedStatement preparedStatement=connection.prepareStatement("Select * from employee_payroll; ");
+            ResultSet resultSet=preparedStatement.executeQuery();
 
             while (resultSet.next()){
                 int id=resultSet.getInt(1);
@@ -43,7 +44,6 @@ public class EmployeePayroll {
                         resultSet.getDate(3),resultSet.getDouble(4),resultSet.getString(5));
                 employeePayrollDataArrayList.add(employeePayrollData);
             }
-            statement.close();
             connection.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
