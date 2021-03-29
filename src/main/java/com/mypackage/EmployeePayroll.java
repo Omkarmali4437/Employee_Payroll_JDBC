@@ -96,9 +96,9 @@ public class EmployeePayroll {
         return list;
     }
 
-    public void insertValuesintoTables(String name,String date,double salary,String gender) throws SQLException {
+    public void insertValuesintoTables(String name,String date,double salary,String gender,int payroll_id) throws SQLException {
+        Connection connection=this.getConnection();
         try{
-            Connection connection=this.getConnection();
             connection.setAutoCommit(false);
             PreparedStatement preparedStatement=connection.prepareStatement("insert into employee_payroll(name,start,salary,gender) values(?,?,?,?); ");
             preparedStatement.setNString(1,name);
@@ -107,25 +107,26 @@ public class EmployeePayroll {
             preparedStatement.setNString(4,gender);
             int resultSet=preparedStatement.executeUpdate();
 
-            int i=3;
             PreparedStatement preparedStatement1=connection.prepareStatement("insert into payroll_detials(payroll_id,basicpay,deduction,taxpay,tax,netpay) values(?,?,?,?,?,?); ");
-            preparedStatement1.setInt(1,i);
+            preparedStatement1.setInt(1,payroll_id);
             preparedStatement1.setDouble(2, salary/20);
             preparedStatement1.setDouble(3,salary/10);
             preparedStatement1.setDouble(4,salary/8);
             preparedStatement1.setDouble(5,salary/60);
             preparedStatement1.setDouble(6,salary/30);
             int resultSet1=preparedStatement1.executeUpdate();
-            i++;
             connection.commit();
         }catch (SQLException throwables){
             throwables.printStackTrace();
+            connection.rollback();
+        }finally {
+            connection.close();
         }
     }
 
-    public int insertIntoPayrollDetails(int payroll_id,double basicpay,double deduction,double taxpay,double tax,double netpay){
+    public int insertIntoPayrollDetails(int payroll_id,double basicpay,double deduction,double taxpay,double tax,double netpay) throws SQLException {
+        Connection connection=this.getConnection();
         try{
-            Connection connection=this.getConnection();
             PreparedStatement preparedStatement=connection.prepareStatement("insert into payroll_detials(payroll_id,basicpay,deduction,taxpay,tax,netpay) values(?,?,?,?,?,?); ");
 
             preparedStatement.setInt(1,payroll_id);

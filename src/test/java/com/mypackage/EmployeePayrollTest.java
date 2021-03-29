@@ -48,14 +48,14 @@ public class EmployeePayrollTest {
         String date="2020-03-07";
         double salary=500000;
         String gender="M";
-
-        employeePayroll.insertValuesintoTables(name,date,salary,gender);
+        int payroll_id=5;
+        employeePayroll.insertValuesintoTables(name,date,salary,gender,payroll_id);
         List<EmployeePayrollData> employeePayrollDataList=employeePayroll.readData();
         Assert.assertEquals(6,employeePayrollDataList.size());
     }
 
     @Test
-    public void insert_in_payroll_details() {
+    public void insert_in_payroll_details() throws SQLException {
         int payroll_id=1;
         double basicpay=6000;
         double deduction=20000;
@@ -64,5 +64,18 @@ public class EmployeePayrollTest {
         double netpay=3000;
         int result=employeePayroll.insertIntoPayrollDetails(payroll_id,basicpay,deduction,taxpay,tax,netpay);
         Assert.assertEquals(1,result);
+    }
+
+    @Test
+    public void adding_new_employee_details_in_employee_table() throws SQLException {
+        String name="Karen";
+        String date="2019-08-09";
+        double salary=800000;
+        String gender="F";
+        int payroll_id=4;
+
+        employeePayroll.insertValuesintoTables(name,date,salary,gender,payroll_id);
+        List<EmployeePayrollData> employeePayrollDataList=employeePayroll.readData();
+        Assert.assertEquals(7,employeePayrollDataList.size());
     }
 }
