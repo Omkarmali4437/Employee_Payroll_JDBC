@@ -3,6 +3,8 @@ package com.mypackage;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.sql.SQLException;
 import java.util.List;
 
 public class EmployeePayrollTest {
@@ -41,7 +43,7 @@ public class EmployeePayrollTest {
     }
 
     @Test
-    public void insert_new_employee_in_employee_table(){
+    public void insert_new_employee_in_employee_table() throws SQLException {
         String name="Peter";
         String date="2020-03-07";
         double salary=500000;
@@ -49,7 +51,7 @@ public class EmployeePayrollTest {
 
         employeePayroll.insertValuesintoTables(name,date,salary,gender);
         List<EmployeePayrollData> employeePayrollDataList=employeePayroll.readData();
-        Assert.assertEquals(5,employeePayrollDataList.size());
+        Assert.assertEquals(6,employeePayrollDataList.size());
     }
 
     @Test
@@ -60,6 +62,7 @@ public class EmployeePayrollTest {
         double taxpay=60000;
         double tax=80000;
         double netpay=3000;
-        employeePayroll.insertIntoPayrollDetails(payroll_id,basicpay,deduction,taxpay,tax,netpay);
+        int result=employeePayroll.insertIntoPayrollDetails(payroll_id,basicpay,deduction,taxpay,tax,netpay);
+        Assert.assertEquals(1,result);
     }
 }
