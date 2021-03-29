@@ -22,7 +22,7 @@ public class EmployeePayrollTest {
     }
 
     @Test
-    public void update_table_should_return_true(){
+    public void update_table_should_return_true() throws SQLException {
         double salary=600000;
         int id=3;
         long result=employeePayroll.updateData(salary,id);
@@ -72,10 +72,19 @@ public class EmployeePayrollTest {
         String date="2019-08-09";
         double salary=800000;
         String gender="F";
-        int payroll_id=4;
+        int payroll_id=5;
 
         employeePayroll.insertValuesintoTables(name,date,salary,gender,payroll_id);
         List<EmployeePayrollData> employeePayrollDataList=employeePayroll.readData();
-        Assert.assertEquals(7,employeePayrollDataList.size());
+        Assert.assertEquals(6,employeePayrollDataList.size());
+    }
+
+    @Test
+    public void deleting_employee_from_employee_table() throws  SQLException{
+        String name="Karen";
+
+        employeePayroll.deleteRecordFromEmployeePayroll(name);
+        List<EmployeePayrollData> employeePayrollDataList=employeePayroll.readData();
+        Assert.assertEquals(5,employeePayrollDataList.size());
     }
 }
