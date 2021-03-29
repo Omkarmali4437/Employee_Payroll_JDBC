@@ -51,4 +51,15 @@ public class EmployeePayrollTest {
         List<EmployeePayrollData> employeePayrollDataList=employeePayroll.readData();
         Assert.assertEquals(5,employeePayrollDataList.size());
     }
+
+    @Test
+    public void insert_in_payroll_details() {
+        int payroll_id=1;
+        double basicpay=6000;
+        double deduction=20000;
+        double taxpay=60000;
+        double tax=80000;
+        double netpay=3000;
+        employeePayroll.insertIntoPayrollDetails(payroll_id,basicpay,deduction,taxpay,tax,netpay);
+    }
 }

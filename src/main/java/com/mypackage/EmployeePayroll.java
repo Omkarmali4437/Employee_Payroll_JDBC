@@ -110,4 +110,21 @@ public class EmployeePayroll {
             throwables.printStackTrace();
         }
     }
+
+    public void insertIntoPayrollDetails(int payroll_id,double basicpay,double deduction,double taxpay,double tax,double netpay){
+        try{
+            Connection connection=this.getConnection();
+            PreparedStatement preparedStatement=connection.prepareStatement("insert into payroll_detials(payroll_id,basicpay,deduction,taxpay,tax,netpay) values(?,?,?,?,?,?); ");
+
+            preparedStatement.setInt(1,payroll_id);
+            preparedStatement.setDouble(2, basicpay);
+            preparedStatement.setDouble(3,deduction);
+            preparedStatement.setDouble(4,taxpay);
+            preparedStatement.setDouble(5,tax);
+            preparedStatement.setDouble(6,netpay);
+            int resultSet=preparedStatement.executeUpdate();
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+    }
 }
