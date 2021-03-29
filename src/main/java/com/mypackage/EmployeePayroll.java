@@ -1,7 +1,6 @@
-package com.myPackage;
+package com.mypackage;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +25,6 @@ public class EmployeePayroll {
             ResultSet resultSet=preparedStatement.executeQuery();
 
             while (resultSet.next()){
-                int id=resultSet.getInt(1);
-                String name=resultSet.getString(2);
-                Date date=resultSet.getDate(3);
-                double salary=resultSet.getDouble(4);
-                String gender=resultSet.getString(5);
                 EmployeePayrollData employeePayrollData=new EmployeePayrollData(resultSet.getInt(1),resultSet.getString(2),
                         resultSet.getDate(3),resultSet.getDouble(4),resultSet.getString(5));
                 employeePayrollDataArrayList.add(employeePayrollData);
@@ -67,11 +61,6 @@ public class EmployeePayroll {
             ResultSet resultSet=preparedStatement.executeQuery();
 
             while (resultSet.next()){
-                int id=resultSet.getInt(1);
-                String name=resultSet.getString(2);
-                Date date1=resultSet.getDate(3);
-                double salary=resultSet.getDouble(4);
-                String gender=resultSet.getString(5);
                 EmployeePayrollData employeePayrollData=new EmployeePayrollData(resultSet.getInt(1),resultSet.getString(2),
                         resultSet.getDate(3),resultSet.getDouble(4),resultSet.getString(5));
                 employeePayrollDataArrayList.add(employeePayrollData);
@@ -105,5 +94,20 @@ public class EmployeePayroll {
             throwables.printStackTrace();
         }
         return list;
+    }
+
+    public void insertValuesintoTables(String name,String date,double salary,String gender){
+        try{
+            Connection connection=this.getConnection();
+            PreparedStatement preparedStatement=connection.prepareStatement("insert into employee_payroll(name,start,salary,gender) values(?,?,?,?); ");
+
+            preparedStatement.setNString(1,name);
+            preparedStatement.setDate(2, Date.valueOf(date));
+            preparedStatement.setDouble(3,salary);
+            preparedStatement.setNString(4,gender);
+            int resultSet=preparedStatement.executeUpdate();
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
     }
 }

@@ -1,7 +1,6 @@
-package com.myPackage;
+package com.mypackage;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 public class EmployeePayrollData {
     public int id;

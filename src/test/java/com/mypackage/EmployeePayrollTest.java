@@ -1,14 +1,12 @@
-package com.myPackage;
+package com.mypackage;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
-
 public class EmployeePayrollTest {
+
     EmployeePayroll employeePayroll;
     @Before
     public void setup(){
@@ -37,8 +35,20 @@ public class EmployeePayrollTest {
     }
 
     @Test
-    public void retur_sum_avg_min_max_count(){
+    public void return_sum_avg_min_max_count(){
         List<String> list=employeePayroll.dataManipulation();
         Assert.assertEquals(12,list.size());
+    }
+
+    @Test
+    public void insert_new_employee_in_employee_table(){
+        String name="Peter";
+        String date="2020-03-07";
+        double salary=500000;
+        String gender="M";
+
+        employeePayroll.insertValuesintoTables(name,date,salary,gender);
+        List<EmployeePayrollData> employeePayrollDataList=employeePayroll.readData();
+        Assert.assertEquals(5,employeePayrollDataList.size());
     }
 }
