@@ -4,7 +4,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeePayrollTest {
@@ -86,5 +88,15 @@ public class EmployeePayrollTest {
         employeePayroll.deleteRecordFromEmployeePayroll(name);
         List<EmployeePayrollData> employeePayrollDataList=employeePayroll.readData();
         Assert.assertEquals(5,employeePayrollDataList.size());
+    }
+
+    @Test
+    public void insert_multiple_values_into_a_table_at_a_single_time() throws SQLException {
+        List<EmployeePayrollData> list=new ArrayList<>();
+        list.add(new EmployeePayrollData(0,"Ajay", Date.valueOf("2019-05-19"),5777773,"M"));
+        list.add(new EmployeePayrollData(0,"Pooja",Date.valueOf("2019-01-21"),800000,"F"));
+        employeePayroll.insetUsingArrays(list);
+        List<EmployeePayrollData> employeePayrollDataList=employeePayroll.readData();
+        Assert.assertEquals(7,employeePayrollDataList.size());
     }
 }

@@ -2,6 +2,7 @@ package com.mypackage;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class EmployeePayroll {
@@ -155,6 +156,28 @@ public class EmployeePayroll {
             int resultSet = preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            connection.rollback();
+        }
+    }
+
+    public void  insetUsingArrays(List<EmployeePayrollData> employeePayrollData) throws SQLException {
+        Connection connection=this.getConnection();
+        try{
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement=connection.prepareStatement("insert into employee_payroll(id,name,start,salary,gender) values(?,?,?,?,?) ;");
+            for(Iterator<EmployeePayrollData> iterator=employeePayrollData.iterator();iterator.hasNext();){
+                EmployeePayrollData employeePayrollData1=(EmployeePayrollData) iterator.next();
+                preparedStatement.setInt(1,employeePayrollData1.getId());
+                preparedStatement.setString(2,employeePayrollData1.getName());
+                preparedStatement.setDate(3,employeePayrollData1.getDate());
+                preparedStatement.setDouble(4,employeePayrollData1.getSalary());
+                preparedStatement.setString(5,employeePayrollData1.getGender());
+                preparedStatement.addBatch();
+            }
+            int[] updatecounts=preparedStatement.executeBatch();
+            connection.commit();
+        }catch (SQLException throwables){
             throwables.printStackTrace();
             connection.rollback();
         }
