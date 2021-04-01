@@ -1,11 +1,12 @@
 package com.mypackage;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.sql.Date;
+import java.util.*;
 
 public class EmployeePayroll {
+
+    private String employeePayrollData;
 
     private Connection getConnection() throws SQLException {
         String jdbcurl = "jdbc:mysql://localhost:3306/employeepayroll?useSSL=false";
@@ -161,6 +162,25 @@ public class EmployeePayroll {
         }
     }
 
+    public void insertRecords(String name, String date, double salary, String gender) throws SQLException {
+        Connection connection = this.getConnection();
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement = connection.prepareStatement("insert into employee_payroll(name,start,salary,gender) values(?,?,?,?); ");
+            preparedStatement.setNString(1, name);
+            preparedStatement.setDate(2, Date.valueOf(date));
+            preparedStatement.setDouble(3, salary);
+            preparedStatement.setNString(4, gender);
+            int resultSet = preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            connection.rollback();
+        } finally {
+            connection.close();
+        }
+    }
+
     public void  insetUsingArrays(List<EmployeePayrollData> employeePayrollData) throws SQLException {
         Connection connection=this.getConnection();
         try{
@@ -181,5 +201,33 @@ public class EmployeePayroll {
             throwables.printStackTrace();
             connection.rollback();
         }
+    }
+
+
+    public void insertUsingThreads(List<EmployeePayrollData> employeePayrollData) throws SQLException {
+        Map<Integer, Boolean> employee = new HashMap<>();
+        employeePayrollData.forEach(employeePayrollData1 -> {
+            Runnable task = () -> {
+                employee.put(employeePayrollData.hashCode(),  false);
+                System.out.println("Employee being added : " + Thread.currentThread().getName());
+                try {
+                    this.insertRecords(employeePayrollData1.name, String.valueOf(employeePayrollData1.date), employeePayrollData1.salary,employeePayrollData1.gender);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                employee.put(employeePayrollData.hashCode(), true);
+                System.out.println("Employee added : " + Thread.currentThread().getName());
+            };
+            Thread thread = new Thread(task, employeePayrollData1.name);
+            thread.start();
+        });
+        while (employee.containsValue(false)) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("" + this.employeePayrollData);
     }
 }

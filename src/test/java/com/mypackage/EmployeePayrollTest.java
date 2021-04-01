@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +85,7 @@ public class EmployeePayrollTest {
 
     @Test
     public void deleting_employee_from_employee_table() throws  SQLException{
-        String name="Karen";
+        String name="Pooja";
 
         employeePayroll.deleteRecordFromEmployeePayroll(name);
         List<EmployeePayrollData> employeePayrollDataList=employeePayroll.readData();
@@ -93,10 +95,33 @@ public class EmployeePayrollTest {
     @Test
     public void insert_multiple_values_into_a_table_at_a_single_time() throws SQLException {
         List<EmployeePayrollData> list=new ArrayList<>();
-        list.add(new EmployeePayrollData(0,"Ajay", Date.valueOf("2019-05-19"),5777773,"M"));
-        list.add(new EmployeePayrollData(0,"Pooja",Date.valueOf("2019-01-21"),800000,"F"));
+
+        list.add(new EmployeePayrollData(6,"Ajay", Date.valueOf("2019-05-19"),5777773,"M"));
+        list.add(new EmployeePayrollData(7,"Pooja",Date.valueOf("2019-01-21"),800000,"F"));
+
+        Instant start=Instant.now();
         employeePayroll.insetUsingArrays(list);
+        Instant end=Instant.now();
+        System.out.println("Duration of non thread process is: "+ Duration.between(start,end));
+
         List<EmployeePayrollData> employeePayrollDataList=employeePayroll.readData();
         Assert.assertEquals(7,employeePayrollDataList.size());
     }
+
+    @Test
+    public void insert_multiple_records_using_threads() throws SQLException {
+        List<EmployeePayrollData> list=new ArrayList<>();
+
+        list.add(new EmployeePayrollData(8,"Vighnesh", Date.valueOf("2017-03-09"),900000,"M"));
+        list.add(new EmployeePayrollData(9,"Seema",Date.valueOf("2018-06-19"),919918,"F"));
+
+        Instant start=Instant.now();
+        employeePayroll.insetUsingArrays(list);
+        Instant end=Instant.now();
+        System.out.println("Duration of non thread process is: "+ Duration.between(start,end));
+
+        List<EmployeePayrollData> employeePayrollDataList=employeePayroll.readData();
+        Assert.assertEquals(9,employeePayrollDataList.size());
+    }
+
 }
