@@ -22,7 +22,7 @@ public class EmployeePayrollTest {
     @Test
     public void given_select_statement_should_return_count(){
         List<EmployeePayrollData> employeePayrollDataList=employeePayroll.readData();
-        Assert.assertEquals(4,employeePayrollDataList.size());
+        Assert.assertEquals(11,employeePayrollDataList.size());
     }
 
     @Test
@@ -116,7 +116,23 @@ public class EmployeePayrollTest {
         list.add(new EmployeePayrollData(9,"Seema",Date.valueOf("2018-06-19"),919918,"F"));
 
         Instant start=Instant.now();
-        employeePayroll.insetUsingArrays(list);
+        employeePayroll.insertUsingThreads(list);
+        Instant end=Instant.now();
+        System.out.println("Duration of non thread process is: "+ Duration.between(start,end));
+
+        List<EmployeePayrollData> employeePayrollDataList=employeePayroll.readData();
+        Assert.assertEquals(9,employeePayrollDataList.size());
+    }
+
+    @Test
+    public  void insert_in_synchronised_way_in_table() throws SQLException{
+        List<EmployeePayrollData> list=new ArrayList<>();
+
+        list.add(new EmployeePayrollData(8,"Deva", Date.valueOf("2018-05-10"),899980,"M"));
+        list.add(new EmployeePayrollData(9,"Shruti",Date.valueOf("2020-07-09"),889918,"F"));
+
+        Instant start=Instant.now();
+        employeePayroll.insertUsingThreads(list);
         Instant end=Instant.now();
         System.out.println("Duration of non thread process is: "+ Duration.between(start,end));
 

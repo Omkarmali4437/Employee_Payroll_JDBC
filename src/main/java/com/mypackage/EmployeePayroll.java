@@ -7,15 +7,23 @@ import java.util.*;
 public class EmployeePayroll {
 
     private String employeePayrollData;
+    private int ConnectionCounter=0;
 
-    private Connection getConnection() throws SQLException {
+    private synchronized Connection getConnection() throws SQLException {
         String jdbcurl = "jdbc:mysql://localhost:3306/employeepayroll?useSSL=false";
         String usernam = "root";
         String password = "Madnimisha@4437";
-        Connection con;
-        System.out.println("Connecting to database: " + jdbcurl);
-        con = DriverManager.getConnection(jdbcurl, usernam, password);
-        System.out.println("Connection successfull: " + con);
+        Connection con=null;
+        try {
+            System.out.println("Connecting to database: " + jdbcurl);
+            System.out.println("Processing Thread "+Thread.currentThread().getName()+"Connecting to database with id "+ConnectionCounter);
+            con = DriverManager.getConnection(jdbcurl, usernam, password);
+            System.out.println("Processing Thread "+Thread.currentThread().getName()+" id "+ConnectionCounter+ " Connection was sucessfull!!! " +con);
+            System.out.println("Connection successfull: " + con);
+            return con;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return con;
     }
 
