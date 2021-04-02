@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.SQLException;
+
 public class JSONServeTest {
 
 
@@ -43,12 +45,27 @@ public class JSONServeTest {
     public void whenNewEmployee_isAdded_Sholdreturn201ResponseCode(){
         JSONServerEmpData[] jsonServerEmpData=getEmplist();
 
-        JSONServerEmpData jsonServerEmpData1=new JSONServerEmpData(8,"Dipesh",6000);
+        JSONServerEmpData jsonServerEmpData1=new JSONServerEmpData(7,"Kamal",9000);
 
         Response response=addEmployeeToJsonServer(jsonServerEmpData1);
         int statusCode= response.statusCode();
         Assert.assertEquals(201,statusCode);
-
-        Assert.assertEquals(8,jsonServerEmpData.length);
     }
+
+    @Test
+    public void givenNewalary_Should_Retun200ResponseCode() throws SQLException {
+        JSONServerEmpData[] serverEmpData=getEmplist();
+
+        //String empJson=new Gson().toJson(serverEmpData);
+
+        RequestSpecification requestSpecification=RestAssured.given();
+        requestSpecification.header("Content-Type","application/json");
+        requestSpecification.body("{\"name\":\"Sayali\",\"salary\":\"789914\"}");
+        Response response=requestSpecification.put("/employees/update/6");
+
+        int statusCode=response.getStatusCode();
+        Assert.assertEquals(200,statusCode);
+    }
+
+
 }
