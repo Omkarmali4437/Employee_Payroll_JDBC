@@ -36,6 +36,19 @@ public class JSONServeTest {
     public void givenEmployeeDate_shouldRetrieve_ServerData(){
         JSONServerEmpData[] restAssureEmpData=getEmplist();
         System.out.println(restAssureEmpData);
-        Assert.assertEquals(6,restAssureEmpData.length);
+        Assert.assertEquals(8,restAssureEmpData.length);
+    }
+
+    @Test
+    public void whenNewEmployee_isAdded_Sholdreturn201ResponseCode(){
+        JSONServerEmpData[] jsonServerEmpData=getEmplist();
+
+        JSONServerEmpData jsonServerEmpData1=new JSONServerEmpData(8,"Dipesh",6000);
+
+        Response response=addEmployeeToJsonServer(jsonServerEmpData1);
+        int statusCode= response.statusCode();
+        Assert.assertEquals(201,statusCode);
+
+        Assert.assertEquals(8,jsonServerEmpData.length);
     }
 }
