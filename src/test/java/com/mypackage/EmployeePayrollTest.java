@@ -129,7 +129,7 @@ public class EmployeePayrollTest {
         List<EmployeePayrollData> list=new ArrayList<>();
 
         list.add(new EmployeePayrollData(8,"Deva", Date.valueOf("2018-05-10"),899980,"M"));
-        list.add(new EmployeePayrollData(9,"Shruti",Date.valueOf("2020-07-09"),889918,"F"));
+        list.add(new EmployeePayrollData(9,"Seema",Date.valueOf("2020-07-09"),889918,"F"));
 
         Instant start=Instant.now();
         employeePayroll.insertUsingThreads(list);
