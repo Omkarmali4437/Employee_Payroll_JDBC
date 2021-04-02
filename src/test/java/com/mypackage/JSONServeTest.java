@@ -45,7 +45,7 @@ public class JSONServeTest {
     public void whenNewEmployee_isAdded_Sholdreturn201ResponseCode(){
         JSONServerEmpData[] jsonServerEmpData=getEmplist();
 
-        JSONServerEmpData jsonServerEmpData1=new JSONServerEmpData(7,"Kamal",9000);
+        JSONServerEmpData jsonServerEmpData1=new JSONServerEmpData(8,"Manish",20000);
 
         Response response=addEmployeeToJsonServer(jsonServerEmpData1);
         int statusCode= response.statusCode();
@@ -53,10 +53,8 @@ public class JSONServeTest {
     }
 
     @Test
-    public void givenNewalary_Should_Retun200ResponseCode() throws SQLException {
+    public void givenNewSalary_Should_Retun200ResponseCode() throws SQLException {
         JSONServerEmpData[] serverEmpData=getEmplist();
-
-        //String empJson=new Gson().toJson(serverEmpData);
 
         RequestSpecification requestSpecification=RestAssured.given();
         requestSpecification.header("Content-Type","application/json");
@@ -67,5 +65,17 @@ public class JSONServeTest {
         Assert.assertEquals(200,statusCode);
     }
 
+    @Test
+    public void givenDelete_Command_ShouldRetun200ResponseCode() throws SQLException {
+        JSONServerEmpData[] serverEmpData=getEmplist();
+        String empJson=new Gson().toJson(serverEmpData);
 
+        RequestSpecification requestSpecification=RestAssured.given();
+        requestSpecification.header("Content-Type","application/json");
+        requestSpecification.body(empJson);
+        Response response=requestSpecification.delete("/employees/delete/8");
+
+        int statusCode=response.getStatusCode();
+        Assert.assertEquals(200,statusCode);
+    }
 }
